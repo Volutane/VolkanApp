@@ -1,54 +1,56 @@
 import { View, Text, ImageBackground, StyleSheet, FlatList, TouchableOpacity, Dimensions, Image } from 'react-native';
-import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
 
 const { width, height } = Dimensions.get('window');
 
 const Notification = () => {
-  const [selectedTab, setSelectedTab] = useState('Friends'); 
+  const router = useRouter();
+  const [selectedTab, setSelectedTab] = useState('Friends');
 
-  
   const tabs = ['Friends', 'You'];
 
-  
   const friendsNotifications = [
-    { id: '1', user: 'Orçun', status: 'Played', gameImage: require('../assets/images/icon.png') },
-    { id: '2', user: 'Orçun', status: 'Wants', gameImage: require('../assets/images/icon.png') },
-    { id: '3', user: 'Orçun', status: 'Played', gameImage: require('../assets/images/icon.png') },
-    { id: '4', user: 'Orçun', status: 'Wants', gameImage: require('../assets/images/icon.png') },
+    { id: '1', user: 'Orçun', status: 'Played', gameImage: require('../../assets/images/icon.png') },
+    { id: '2', user: 'Orçun', status: 'Wants', gameImage: require('../../assets/images/icon.png') },
+    { id: '3', user: 'Orçun', status: 'Played', gameImage: require('../../assets/images/icon.png') },
+    { id: '4', user: 'Orçun', status: 'Wants', gameImage: require('../../assets/images/icon.png') },
   ];
 
-  
   const yourNotifications = [
-    { id: '1', user: 'You', status: 'Played', gameImage: require('../assets/images/icon.png') },
-    { id: '2', user: 'You', status: 'Wants', gameImage: require('../assets/images/icon.png') },
+    { id: '1', user: 'You', status: 'Played', gameImage: require('../../assets/images/icon.png') },
+    { id: '2', user: 'You', status: 'Wants', gameImage: require('../../assets/images/icon.png') },
   ];
 
-  
   const renderNotification = ({ item }) => (
-    <View style={styles.notificationCard}>
+    <TouchableOpacity
+      onPress={() => router.push({ pathname: '/GameDetailScreen', params: { game: JSON.stringify({ name: item.user, image: item.gameImage }) } })}
+      style={styles.notificationCard}
+    >
       <View style={styles.avatar} />
       <View style={styles.notificationContent}>
         <View style={styles.textContainer}>
           <Text style={styles.userText}>{item.user}</Text>
           <Text style={styles.statusText}> {item.status}</Text>
         </View>
-        <Image
-          source={item.gameImage}
-          style={styles.gameImage}
-          resizeMode="cover"
-        />
+        <Image source={item.gameImage} style={styles.gameImage} resizeMode="cover" />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
     <ImageBackground
-      source={require('../assets/images/Katman.png')} 
+      source={require('../../assets/images/Katman.png')}
       style={[styles.container, { width, height }]}
       resizeMode="cover"
     >
       <View style={styles.overlay} />
       <View style={styles.content}>
+        
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Notifications</Text>
+        </View>
+
         
         <View style={styles.tabMenu}>
           {tabs.map((tab) => (
@@ -83,17 +85,27 @@ const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'black',
-    opacity: 0.3, 
+    opacity: 0.3,
   },
   content: {
     flex: 1,
     padding: 20,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
   tabMenu: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 20,
-    backgroundColor: 'black', 
+    backgroundColor: 'black',
     borderRadius: 25,
     paddingVertical: 5,
     paddingHorizontal: 10,
@@ -113,12 +125,12 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#00FF00', 
+    backgroundColor: '#00FF00',
     position: 'absolute',
     bottom: 2,
   },
   notificationList: {
-    paddingBottom: 100, 
+    paddingBottom: 100,
   },
   notificationCard: {
     flexDirection: 'row',
@@ -132,7 +144,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#1A2B34', 
+    backgroundColor: '#1A2B34',
     marginRight: 15,
   },
   notificationContent: {
@@ -151,11 +163,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   statusText: {
-    color: '#A9A9A9', 
-    fontSize: 14, 
+    color: '#A9A9A9',
+    fontSize: 14,
   },
   gameImage: {
-    width: 60, 
+    width: 60,
     height: 80,
     borderRadius: 5,
   },

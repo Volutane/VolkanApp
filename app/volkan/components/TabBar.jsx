@@ -10,7 +10,7 @@ const icons = {
   search: ({ color }) => <Ionicons name="search" size={28} color={color} />,
 };
 
-const primaryColor = '#0b4716';
+const primaryColor = '#00FF00';
 const greyColor = '#8E8E93';
 
 const TabBar = ({ state, descriptors, navigation }) => {

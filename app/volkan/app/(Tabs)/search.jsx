@@ -1,38 +1,45 @@
 import { View, Text, ImageBackground, StyleSheet, TextInput, FlatList, TouchableOpacity, Dimensions } from 'react-native';
-import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
 
 const { width, height } = Dimensions.get('window');
 
 const Search = () => {
-  const [selectedTab, setSelectedTab] = useState('Newest'); 
+  const router = useRouter();
+  const [selectedTab, setSelectedTab] = useState('Newest');
 
-  
   const tabs = ['Newest', 'Popular', 'Most Liked', 'Recent'];
 
-  
   const data = [
     { id: '1', title: 'Game 1', year: 2025 },
     { id: '2', title: 'Game 2', year: 2024 },
     { id: '3', title: 'Game 3', year: 2025 },
   ];
 
-  
   const renderItem = ({ item }) => (
-    <View style={styles.card}>
+    <TouchableOpacity
+      onPress={() => router.push({ pathname: '/GameDetailScreen', params: { game: JSON.stringify({ name: item.title, year: item.year }) } })}
+      style={styles.card}
+    >
       <Text style={styles.cardText}>{item.title}</Text>
       <Text style={styles.cardYear}>x ({item.year})</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
     <ImageBackground
-      source={require('../assets/images/Katman.png')} 
+      source={require('../../assets/images/Katman.png')}
       style={[styles.container, { width, height }]}
       resizeMode="cover"
     >
       <View style={styles.overlay} />
       <View style={styles.content}>
+        
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Search</Text>
+        </View>
+
         
         <Text style={styles.headerText}>Find what you're looking for and more...</Text>
 
@@ -52,17 +59,9 @@ const Search = () => {
             <TouchableOpacity
               key={tab}
               onPress={() => setSelectedTab(tab)}
-              style={[
-                styles.tabItem,
-                selectedTab === tab && styles.tabItemActive,
-              ]}
+              style={[styles.tabItem, selectedTab === tab && styles.tabItemActive]}
             >
-              <Text
-                style={[
-                  styles.tabText,
-                  selectedTab === tab && styles.tabTextActive,
-                ]}
-              >
+              <Text style={[styles.tabText, selectedTab === tab && styles.tabTextActive]}>
                 {tab}
               </Text>
             </TouchableOpacity>
@@ -74,7 +73,7 @@ const Search = () => {
           data={data}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          numColumns={2} 
+          numColumns={2}
           columnWrapperStyle={styles.columnWrapper}
           contentContainerStyle={styles.listContainer}
         />
@@ -90,11 +89,16 @@ const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'black',
-    opacity: 0.3, 
+    opacity: 0.3,
   },
   content: {
     flex: 1,
     padding: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   headerText: {
     color: 'white',
@@ -130,18 +134,18 @@ const styles = StyleSheet.create({
   },
   tabItemActive: {
     borderBottomWidth: 2,
-    borderBottomColor: '#00FF00', 
+    borderBottomColor: '#00FF00',
   },
   tabText: {
     color: '#A9A9A9',
     fontSize: 16,
   },
   tabTextActive: {
-    color: '#00FF00', 
+    color: '#00FF00',
     fontWeight: 'bold',
   },
   listContainer: {
-    paddingBottom: 100, 
+    paddingBottom: 100,
   },
   columnWrapper: {
     justifyContent: 'space-between',
@@ -151,7 +155,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
-    width: (width - 60) / 2, 
+    width: (width - 60) / 2,
     height: 100,
     justifyContent: 'center',
     alignItems: 'center',

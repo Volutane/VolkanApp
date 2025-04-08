@@ -1,15 +1,16 @@
 import { View, Text, ImageBackground, StyleSheet, Image, TouchableOpacity, FlatList, Dimensions } from 'react-native';
-import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
 
 const { width, height } = Dimensions.get('window');
 
 const Profile = () => {
-  const [selectedTab, setSelectedTab] = useState('Games'); 
+  const router = useRouter();
+  const [selectedTab, setSelectedTab] = useState('Games');
 
-  
   const tabs = ['Games', 'Wishlist'];
 
-  
   const gamesData = [
     { id: '1', title: 'Game 1' },
     { id: '2', title: 'Game 2' },
@@ -21,24 +22,34 @@ const Profile = () => {
     { id: '2', title: 'Wishlist Game 2' },
   ];
 
-  
   const renderItem = ({ item }) => (
-    <View style={styles.card}>
+    <TouchableOpacity
+      onPress={() => router.push({ pathname: '/GameDetailScreen', params: { game: JSON.stringify({ name: item.title }) } })}
+      style={styles.card}
+    >
       <Text style={styles.cardText}>{item.title}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
     <ImageBackground
-      source={require('../assets/images/Katman.png')} 
+      source={require('../../assets/images/Katman.png')}
       style={[styles.container, { width, height }]}
       resizeMode="cover"
     >
       <View style={styles.overlay} />
       <View style={styles.content}>
         
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Profile</Text>
+          <TouchableOpacity onPress={() => router.push('/Settings')}>
+            <Ionicons name="settings" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+
+        
         <Image
-          source={require('../assets/images/ay.jpg')} 
+          source={require('../../assets/images/ay.jpg')}
           style={styles.coverImage}
           resizeMode="cover"
         />
@@ -60,7 +71,10 @@ const Profile = () => {
               <Text style={styles.followLabel}>Followers</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.editButton}>
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() => router.push('/EditProfileScreen')}
+          >
             <Text style={styles.editButtonText}>Edit Profile</Text>
           </TouchableOpacity>
         </View>
@@ -71,17 +85,9 @@ const Profile = () => {
             <TouchableOpacity
               key={tab}
               onPress={() => setSelectedTab(tab)}
-              style={[
-                styles.tabItem,
-                selectedTab === tab && styles.tabItemActive,
-              ]}
+              style={[styles.tabItem, selectedTab === tab && styles.tabItemActive]}
             >
-              <Text
-                style={[
-                  styles.tabText,
-                  selectedTab === tab && styles.tabTextActive,
-                ]}
-              >
+              <Text style={[styles.tabText, selectedTab === tab && styles.tabTextActive]}>
                 {tab}
               </Text>
             </TouchableOpacity>
@@ -93,7 +99,7 @@ const Profile = () => {
           data={selectedTab === 'Games' ? gamesData : wishlistData}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          numColumns={2} 
+          numColumns={2}
           columnWrapperStyle={styles.columnWrapper}
           contentContainerStyle={styles.listContainer}
         />
@@ -109,27 +115,39 @@ const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'black',
-    opacity: 0.3, 
+    opacity: 0.3,
   },
   content: {
     flex: 1,
   },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between', 
+    alignItems: 'center',
+    padding: 20,
+    paddingBottom: 10,
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
   coverImage: {
     width: '100%',
-    height: 150, 
+    height: 150,
   },
   profileInfo: {
     alignItems: 'center',
     padding: 20,
   },
   avatarContainer: {
-    marginTop: -50, 
+    marginTop: -50,
   },
   avatar: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: '#2A3B44', 
+    backgroundColor: '#2A3B44',
     borderWidth: 3,
     borderColor: 'white',
   },
@@ -197,7 +215,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingHorizontal: 20,
-    paddingBottom: 100, 
+    paddingBottom: 100,
   },
   columnWrapper: {
     justifyContent: 'space-between',
@@ -207,7 +225,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
-    width: (width - 60) / 2, 
+    width: (width - 60) / 2,
     height: 100,
     justifyContent: 'center',
     alignItems: 'center',
