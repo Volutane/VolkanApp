@@ -1,0 +1,61 @@
+{
+  "expo": {
+    "name": "Raven",
+    "slug": "volkan",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/raven.jpg",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/raven.jpg",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.volkann.volkan"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      "expo-updates"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "61373e3d-f8f3-4a36-8eeb-1fda71bcd258"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "enabled": true,
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/2729a4a9-fe44-4637-a20c-1a7241153715",
+      "checkAutomatically": "ON_LOAD"
+    },
+    "owner": "volkanr"
+  }
+}
